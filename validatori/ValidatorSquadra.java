@@ -18,6 +18,7 @@ public class ValidatorSquadra {
 
         if (!nuovoNome.isEmpty()) {
             // Validazione lunghezza e formato (solo alfanumerici e spazi)
+            //TODO crea il metodo a parte
             if (nuovoNome.length() < 3 || nuovoNome.length() > 20 || !nuovoNome.matches("[a-zA-Z0-9 ]+")) {
                 throw new IllegalArgumentException("❌Il nome deve contenere tra 3 e 20 caratteri alfanumerici e spazi❌");
             }

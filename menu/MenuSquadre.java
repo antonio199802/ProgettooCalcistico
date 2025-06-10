@@ -58,6 +58,7 @@ public class MenuSquadre {
             return;
         }
         System.out.println("=== Elenco Squadre ===");
+        //TODO niente cicli for così, devi usare gli stream
         for (int i = 0; i < squadre.size(); i++) {
             Squadra s = squadre.get(i);
             System.out.println(i + ") " + s.getNome());
@@ -89,6 +90,7 @@ public class MenuSquadre {
         System.out.print("Nome squadra: \n ");
         String nome = scanner.nextLine().trim();
 
+        //TODO stessa cosa che ti ho scritto per la classe menuCalciatori, fai un metodo per questo nella classe ValidatorSquadra e utilizzalo qui
         if ( nome.length() < 3 || nome.length() > 20 || !nome.matches("[a-zA-Z0-9 ]+")) {
             System.out.println("❌ Nome squadra non valido (3-20 caratteri alfanumerici e spazi ) ❌");
             return;
@@ -139,6 +141,7 @@ public class MenuSquadre {
         }
 
         System.out.println("❎Seleziona la squadra da eliminare❌:\n");
+        //TODO stream
         for (int i = 0; i < squadre.size(); i++) {
             System.out.println(i + ") " + squadre.get(i).getNome());
         }
@@ -152,7 +155,7 @@ public class MenuSquadre {
         if (!squadraDaEliminare.getRosa().isEmpty() || !squadraDaEliminare.getPanchina().isEmpty()) {
             System.out.print("🤾‍♂️La squadra contiene calciatori🤾‍♂️. Vuoi spostarli nella lista globale 🌏(s) o eliminarli con la squadra❌(n)? (s/n):\n");
             String risposta = scanner.nextLine().trim().toLowerCase();
-
+    //TODO testare, la logica non mi torna
             if (risposta.equals("s")) {
                 for (Calciatore c : squadraDaEliminare.getRosa()) {
                     if (!calciatori.contains(c)) calciatori.add(c);
@@ -173,6 +176,7 @@ public class MenuSquadre {
     }
 
     // Legge un indice dall'utente
+   //TODO dato che questo metodo è universale per tutte le classi menu, non ripeterlo in ogni classe, crea magari una classe Utils e mettilo li dentro, la classe Utils deve contenere tutti i metodi che vengono usati in tutte le classi menu per evitare che replichi il codice in ogni classe
     private int leggiIndice(Scanner scanner, int max) {
         System.out.print("🔢Inserisci indice🔢: \n ");
         try {
@@ -197,6 +201,7 @@ public class MenuSquadre {
         }
 
         // Mostra calciatori disponibili
+        //TODO stream
         for (int i = 0; i < calciatori.size(); i++) {
             System.out.println(i + ") " + calciatori.get(i));
         }
@@ -208,6 +213,7 @@ public class MenuSquadre {
 
         // Controlla se il calciatore è già assegnato a una squadra
         Squadra squadraCorrente = null;
+        //TODO stream
         for (Squadra s : squadre) {
             if (s.getRosa().contains(c) || s.getPanchina().contains(c)) {
                 squadraCorrente = s;
@@ -216,6 +222,7 @@ public class MenuSquadre {
         }
 
         // Se già assegnato, chiedi conferma per spostarlo
+        //TODO il codice di questo if potresti sportarlo direttamente dentro l'if di riga 218 ed eliminare il check su squadraCorrente
         if (squadraCorrente != null) {
             System.out.println("⚠️ Calciatore attualmente assegnato a: 🫡" + squadraCorrente.getNome());
             System.out.print("💼Vuoi spostarlo in un'altra squadra?⚽️ (s/n): \n ");
@@ -265,9 +272,11 @@ public class MenuSquadre {
 
         // Mostra calciatori con prefisso (R)osa o (P)anchina
         System.out.println("Calciatori in rosa🤾‍♂️:\n");
+        //TODO stream
         for (int i = 0; i < s.getRosa().size(); i++) {
             System.out.println("R" + i + ") " + s.getRosa().get(i));
         }
+        //TODO stream
         System.out.println("Calciatori in panchina 🐖:\n");
         for (int i = 0; i < s.getPanchina().size(); i++) {
             System.out.println("P" + i + ") " + s.getPanchina().get(i));
