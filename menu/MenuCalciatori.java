@@ -71,6 +71,7 @@ public class MenuCalciatori {
 
             System.out.print("Nome:\n ");
             String nome = scanner.nextLine().trim();
+            //TODO dato che il controllo dei caratteri speciali è uguale sia per nome che per cognome, non replicare il codice, crea un metodo a parte chiamato per esempio checkNameValidation e che si prende in input una stringa e poi fai esattamente quell'if che stai facendo, e poi richiami il metodo due volte, una per il nome e una per il cognome
             // Controllo lunghezza e caratteri validi (solo lettere e spazi)
             if (nome.length() < minNome || nome.length() > maxNome || !nome.matches("[a-zA-Z ]+")) {
                 System.out.println("❌ Il nome deve contenere solo lettere (e spazi) e avere tra " + minNome + " e " + maxNome + " caratteri ❌");
