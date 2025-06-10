@@ -82,7 +82,7 @@ public class ValidatorCalciatori {
      * Verifica che nome o cognome siano lunghi tra 3 e 15 caratteri e contengano solo lettere
      * (inclusi accenti italiani), apostrofi, trattini e spazi.
      */
-    private static boolean validaNomeOCognome(String s) {
+    public static boolean validaNomeOCognome(String s) {
         return s.matches("[a-zA-Zàèìòù'\\-\\s]{3,15}");
     }
 

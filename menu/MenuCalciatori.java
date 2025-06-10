@@ -7,6 +7,8 @@ import ProgettoCalcistico.validatori.ValidatorCalciatori;
 import java.util.List;
 import java.util.Scanner;
 
+import static ProgettoCalcistico.validatori.ValidatorCalciatori.validaNomeOCognome;
+
 public class MenuCalciatori {
     // Lista globale di calciatori disponibili
     private final List<Calciatore> calciatori;
@@ -43,7 +45,9 @@ public class MenuCalciatori {
                 case "2" -> creaCalciatore();        // Crea un nuovo calciatore
                 case "3" -> modificaCalciatore();    // Modifica calciatore esistente
                 case "4" -> rimuoviCalciatore();     // Rimuove un calciatore
-                case "5" -> { return; }               // Esce dal menu
+                case "5" -> {
+                    return;
+                }               // Esce dal menu
                 default -> System.out.println("❌ Scelta non valida ❌");
             }
         }
@@ -62,6 +66,12 @@ public class MenuCalciatori {
     }
 
     // Metodo per creare un nuovo calciatore con controlli di validità
+    private void checkNameValidation() {
+
+
+    }
+
+    // Metodo per creare un nuovo calciatore con controlli di validità
     private void creaCalciatore() {
         try {
             // Definizione dei vincoli su nome, cognome e età
@@ -70,21 +80,25 @@ public class MenuCalciatori {
             int minEta = 18, maxEta = 40;
 
             System.out.print("Nome:\n ");
-            String nome = scanner.nextLine().trim();
             //TODO dato che il controllo dei caratteri speciali è uguale sia per nome che per cognome, non replicare il codice, crea un metodo a parte chiamato per esempio checkNameValidation e che si prende in input una stringa e poi fai esattamente quell'if che stai facendo, e poi richiami il metodo due volte, una per il nome e una per il cognome
-            // Controllo lunghezza e caratteri validi (solo lettere e spazi), hai già creato un metodo così in validatorCalciatori, puoi usare quello
-            if (nome.length() < minNome || nome.length() > maxNome || !nome.matches("[a-zA-Z ]+")) {
-                System.out.println("❌ Il nome deve contenere solo lettere (e spazi) e avere tra " + minNome + " e " + maxNome + " caratteri ❌");
-                return;
+            // Controllo lunghezza e caratteri validi (solo lettere e spazi)
+            /*
+            //Modifica richiesta effettuata//
+             */
+            System.out.print("Inserisci il nome: ");
+            String nome = scanner.nextLine();
+            while (!validaNomeOCognome(nome)) {
+                System.out.println("Nome non valido. Deve contenere solo lettere, spazi, apostrofi o trattini, lunghezza tra 3 e 15 caratteri.");
+                nome = scanner.nextLine();
             }
 
-            System.out.print("Cognome:\n ");
-            String cognome = scanner.nextLine().trim();
-            // Controllo lunghezza e caratteri validi (solo lettere e spazi)
-            if (cognome.length() < minCognome || cognome.length() > maxCognome || !cognome.matches("[a-zA-Z ]+")) {
-                System.out.println("❌ Il cognome deve contenere solo lettere (e spazi) e avere tra " + minCognome + " e " + maxCognome + " caratteri ❌");
-                return;
+            System.out.print("Inserisci il cognome: ");
+            String cognome = scanner.nextLine();
+            while (!validaNomeOCognome(cognome)) {
+                System.out.println("Cognome non valido. Deve contenere solo lettere, spazi, apostrofi o trattini, lunghezza tra 3 e 15 caratteri.");
+                cognome = scanner.nextLine();
             }
+
 
             System.out.print("Età (18-40): \n ");
             String etaStr = scanner.nextLine().trim();
