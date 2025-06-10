@@ -98,6 +98,7 @@ public class MenuCalciatori {
             }
             // Controllo range età
             if (eta < minEta || eta > maxEta) {
+
                 System.out.println("❌ Età non valida, deve essere tra " + minEta + " e " + maxEta + " ❌");
                 return;
             }
