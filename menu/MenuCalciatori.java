@@ -72,7 +72,7 @@ public class MenuCalciatori {
             System.out.print("Nome:\n ");
             String nome = scanner.nextLine().trim();
             //TODO dato che il controllo dei caratteri speciali è uguale sia per nome che per cognome, non replicare il codice, crea un metodo a parte chiamato per esempio checkNameValidation e che si prende in input una stringa e poi fai esattamente quell'if che stai facendo, e poi richiami il metodo due volte, una per il nome e una per il cognome
-            // Controllo lunghezza e caratteri validi (solo lettere e spazi)
+            // Controllo lunghezza e caratteri validi (solo lettere e spazi), hai già creato un metodo così in validatorCalciatori, puoi usare quello
             if (nome.length() < minNome || nome.length() > maxNome || !nome.matches("[a-zA-Z ]+")) {
                 System.out.println("❌ Il nome deve contenere solo lettere (e spazi) e avere tra " + minNome + " e " + maxNome + " caratteri ❌");
                 return;
@@ -106,6 +106,7 @@ public class MenuCalciatori {
             System.out.print("Ruolo (portiere, difensore, centrocampista, attaccante):\n ");
             String ruolo = scanner.nextLine().trim().toLowerCase();
             // Controllo che il ruolo sia uno di quelli consentiti
+            //TODO perchè non usi il metodo ValidatorRuolo nella classe validatorCalciatori? è meglio
             if (!ruolo.equals("portiere") && !ruolo.equals("difensore") &&
                     !ruolo.equals("centrocampista") && !ruolo.equals("attaccante")) {
                 System.out.println("❌ Ruolo non valido ❌");
@@ -131,6 +132,7 @@ public class MenuCalciatori {
 
     // Metodo che verifica se esiste già un calciatore con nome, cognome e ruolo uguali
     private boolean esisteCalciatore(String nome, String cognome, String ruolo) {
+        //TODO utilizza lo stream invece che il forEach
         for (Calciatore c : calciatori) {
             if (c.getNome().equalsIgnoreCase(nome)
                     && c.getCognome().equalsIgnoreCase(cognome)
@@ -178,6 +180,7 @@ public class MenuCalciatori {
         Calciatore c = calciatori.get(idx);
         boolean presente = false;
         // Controlla se il calciatore è presente in almeno una squadra (rosa o panchina)
+        //TODO crea un metodo a parte per questo check e usa gli stream
         for (Squadra s : squadre) {
             if (s.getRosa().contains(c) || s.getPanchina().contains(c)) {
                 presente = true;
