@@ -89,7 +89,7 @@ public class ValidatorCalciatori {
     /**
      * Verifica che il ruolo sia uno di quelli ammessi, case-insensitive.
      */
-    private static boolean validaRuolo(String ruolo) {
+    public static boolean validaRuolo(String ruolo) {
         return ruolo.matches("(?i)portiere|difensore|centrocampista|attaccante");
     }
 }

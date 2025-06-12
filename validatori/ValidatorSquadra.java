@@ -2,6 +2,8 @@ package ProgettoCalcistico.validatori;
 
 import ProgettoCalcistico.oggetti.Calciatore;
 import ProgettoCalcistico.oggetti.Squadra;
+
+import java.util.List;
 import java.util.Scanner;
 
 public class ValidatorSquadra {
@@ -126,4 +128,10 @@ public class ValidatorSquadra {
         return squadra.getRosa().stream().anyMatch(c -> c.getNumeroMaglia() == numero)
                 || squadra.getPanchina().stream().anyMatch(c -> c.getNumeroMaglia() == numero);
     }
-}
+
+        public static boolean calciatorePresenteInQualcheSquadra(Calciatore player, List<Squadra> squadre) {
+            return squadre.stream()
+                    .anyMatch(squadra ->
+                            squadra.getRosa().contains(player) || squadra.getPanchina().contains(player));
+        }
+    }

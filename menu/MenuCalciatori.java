@@ -3,11 +3,13 @@ package ProgettoCalcistico.menu;
 import ProgettoCalcistico.oggetti.Calciatore;
 import ProgettoCalcistico.oggetti.Squadra;
 import ProgettoCalcistico.validatori.ValidatorCalciatori;
+import ProgettoCalcistico.validatori.ValidatorSquadra;
 
 import java.util.List;
 import java.util.Scanner;
 
 import static ProgettoCalcistico.validatori.ValidatorCalciatori.validaNomeOCognome;
+import static ProgettoCalcistico.validatori.ValidatorCalciatori.validaRuolo;
 
 public class MenuCalciatori {
     // Lista globale di calciatori disponibili
@@ -66,17 +68,9 @@ public class MenuCalciatori {
     }
 
     // Metodo per creare un nuovo calciatore con controlli di validità
-    private void checkNameValidation() {
-
-
-    }
-
-    // Metodo per creare un nuovo calciatore con controlli di validità
     private void creaCalciatore() {
         try {
-            // Definizione dei vincoli su nome, cognome e età
-            int minNome = 3, maxNome = 15;
-            int minCognome = 3, maxCognome = 15;
+            // Definizione dei vincoli su nome, cognome(con metodo validaNomeOCognome()) e età
             int minEta = 18, maxEta = 40;
 
             System.out.print("Nome:\n ");
@@ -121,10 +115,9 @@ public class MenuCalciatori {
             String ruolo = scanner.nextLine().trim().toLowerCase();
             // Controllo che il ruolo sia uno di quelli consentiti
             //TODO perchè non usi il metodo ValidatorRuolo nella classe validatorCalciatori? è meglio
-            if (!ruolo.equals("portiere") && !ruolo.equals("difensore") &&
-                    !ruolo.equals("centrocampista") && !ruolo.equals("attaccante")) {
-                System.out.println("❌ Ruolo non valido ❌");
-                return;
+            //modifica effettuata//
+            while (!validaRuolo(ruolo)) {
+                System.out.println("Ruolo non valido.Attieniti alle condizioni");
             }
 
             // Verifica se calciatore già presente con stesso nome, cognome e ruolo
@@ -147,15 +140,12 @@ public class MenuCalciatori {
     // Metodo che verifica se esiste già un calciatore con nome, cognome e ruolo uguali
     private boolean esisteCalciatore(String nome, String cognome, String ruolo) {
         //TODO utilizza lo stream invece che il forEach
-        for (Calciatore c : calciatori) {
-            if (c.getNome().equalsIgnoreCase(nome)
-                    && c.getCognome().equalsIgnoreCase(cognome)
-                    && c.getRuolo().equalsIgnoreCase(ruolo)) {
-                return true; // Trovato doppione
-            }
-        }
-        return false;
+        //modifica effettuata
+        return calciatori.stream().anyMatch(calciatore -> calciatore.getNome().equalsIgnoreCase(nome) &&
+                calciatore.getCognome().equalsIgnoreCase(cognome) &&
+                calciatore.getRuolo().equalsIgnoreCase(ruolo));
     }
+
 
     // Metodo per modificare i dati di un calciatore selezionato
     private void modificaCalciatore() {
@@ -191,39 +181,36 @@ public class MenuCalciatori {
         int idx = leggiIndice(calciatori.size());
         if (idx == -1) return; // Indice non valido o uscita
 
-        Calciatore c = calciatori.get(idx);
-        boolean presente = false;
+
         // Controlla se il calciatore è presente in almeno una squadra (rosa o panchina)
         //TODO crea un metodo a parte per questo check e usa gli stream
-        for (Squadra s : squadre) {
-            if (s.getRosa().contains(c) || s.getPanchina().contains(c)) {
-                presente = true;
-                break;
+        //modifica effettuata
+        while (true) {
+            Calciatore player = calciatori.get(idx);
+            boolean presente = ValidatorSquadra.calciatorePresenteInQualcheSquadra(player, squadre);
+            if (presente) {
+                System.out.println("Calciatore gia assegnato alla squadra: " + squadre.get(idx));
             }
-        }
 
-        if (presente) {
-            System.out.println("❌ Impossibile rimuovere; calciatore presente in una squadra ❌");
-            return;
-        }
 
-        // Rimuove calciatore dalla lista globale
-        calciatori.remove(idx);
-        System.out.println("✅ Calciatore rimosso con successo ✅");
+            // Rimuove calciatore dalla lista globale
+            calciatori.remove(idx);
+            System.out.println("✅ Calciatore rimosso con successo ✅");
+        }
     }
 
-    // Metodo helper per leggere e validare l'indice selezionato da input utente
-    private int leggiIndice(int max) {
-        try {
-            int idx = Integer.parseInt(scanner.nextLine());
-            if (idx < 0 || idx >= max) {
-                System.out.println("❌ 😵‍💫 Indice fuori range 😵‍💫 ❌");
+        // Metodo helper per leggere e validare l'indice selezionato da input utente
+        private int leggiIndice ( int max){
+            try {
+                int idx = Integer.parseInt(scanner.nextLine());
+                if (idx < 0 || idx >= max) {
+                    System.out.println("❌ 😵‍💫 Indice fuori range 😵‍💫 ❌");
+                    return -1;
+                }
+                return idx;
+            } catch (NumberFormatException e) {
+                System.out.println("❌ 😵‍💫 Inserire un numero valido 😵‍💫 ❌");
                 return -1;
             }
-            return idx;
-        } catch (NumberFormatException e) {
-            System.out.println("❌ 😵‍💫 Inserire un numero valido 😵‍💫 ❌");
-            return -1;
         }
     }
-}
