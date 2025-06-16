@@ -1,8 +1,12 @@
 package ProgettoCalcistico.validatori;
 
 import ProgettoCalcistico.oggetti.Lega;
+
 import java.util.List;
 import java.util.Scanner;
+
+import static ProgettoCalcistico.validatori.ValidatorSquadra.CheckModify;
+import static ProgettoCalcistico.validatori.ValidatorSquadra.ValidationCharacter;
 
 public class ValidatorLeghe {
 
@@ -13,80 +17,74 @@ public class ValidatorLeghe {
      * - Unicità: non deve esistere già una lega con lo stesso nome (case-insensitive)
      */
     public static Lega creaLega(Scanner scanner, List<Lega> leghe) {
-        String nome;
+
         while (true) {
-            System.out.print("✅Inserisci nome della lega (3-20 caratteri, solo lettere, numeri e spazi)👀: \n ");
+            String nome;
+            System.out.print("✅ Inserisci nome della lega (3-20 caratteri, lettere, numeri e spazi): \n> ");
             nome = scanner.nextLine().trim();
 
-            // Validazione lunghezza
-            if (nome.length() < 3 || nome.length() > 20) {
-                System.out.println("❌Nome deve avere tra 3 e 20 caratteri❌");
+            if (!CheckModify(nome)) {
+                System.out.println("❌ Il nome può contenere solo lettere, apostrofi, trattini e spazi (3-20 caratteri).");
                 continue;
             }
 
-            // Validazione caratteri ammessi
-            if (!nome.matches("[a-zA-Z0-9\\s]+")) {
-                System.out.println("👀❌Il nome può contenere solo lettere, numeri e spazi❌👀");
+            if (!ValidationCharacter(nome)) {
+                System.out.println("❌ Il nome può contenere solo numeri tra 1 e 10.");
                 continue;
             }
-
-            // Controllo se esiste già una lega con lo stesso nome (ignora maiuscole/minuscole)
-            String finalNome = nome;
             boolean esisteGia = leghe.stream()
-                    .anyMatch(l -> l.getNome().equalsIgnoreCase(finalNome));
+                    .anyMatch(l -> l.getNome().equalsIgnoreCase(nome));
             if (esisteGia) {
-                System.out.println("👀❌Esiste già una lega con questo nome❌👀");
+                System.out.println("❌ Esiste già una lega con questo nome ❌");
                 continue;
             }
-
-            // Se supera tutti i controlli, esce dal ciclo
-            break;
+            return new Lega(nome);
         }
-
-        // Crea e restituisce la nuova lega
-        return new Lega(nome);
     }
 
     /**
-     * Metodo per modificare il nome di una lega esistente con controlli simili alla creazione:
-     * - Lunghezza valida
-     * - Solo caratteri ammessi
-     * - Nome non duplicato rispetto ad altre leghe
+     * Metodo per modificare il nome di una lega esistente.
      */
     public static void modificaNomeLega(Lega lega, List<Lega> leghe, Scanner scanner) {
-        System.out.println("👀Nome attuale: " + lega.getNome());
-        System.out.print("Nuovo nome (INVIO per annullare): \n");
+        System.out.println("👀 Nome attuale: " + lega.getNome());
+        System.out.print("Nuovo nome (INVIO per annullare): \n> ");
         String nuovoNome = scanner.nextLine().trim();
 
-        // Se l'utente preme solo invio, annulla la modifica
         if (nuovoNome.isEmpty()) {
-            System.out.println("Modifica annullata");
+            System.out.println("❎ Modifica annullata");
             return;
         }
 
-        // Validazione lunghezza
-        if (nuovoNome.length() < 3 || nuovoNome.length() > 20) {
-            System.out.println("❌Il nome deve avere tra 3 e 20 caratteri❌");
+        if (!checkModify(nuovoNome)) {
+            System.out.println("❌ Il nome può contenere solo lettere, apostrofi, trattini e spazi (3-20 caratteri).");
             return;
         }
 
-        // Validazione caratteri
-        if (!nuovoNome.matches("[a-zA-Z0-9\\s]+")) {
-            System.out.println("❌Il nome può contenere solo lettere, numeri e spazi❌");
+        if (!validationCharacter(nuovoNome)) {
+            System.out.println("❌ Il nome può contenere solo numeri tra 1 e 10.");
             return;
         }
 
-        // Controllo duplicato: il nuovo nome non deve coincidere con un altro già esistente (escludendo sé stesso)
         boolean duplicato = leghe.stream()
                 .anyMatch(l -> !l.equals(lega) && l.getNome().equalsIgnoreCase(nuovoNome));
 
         if (duplicato) {
-            System.out.println("❌Esiste già una lega con questo nome❌👀");
+            System.out.println("❌ Esiste già una lega con questo nome ❌");
             return;
         }
 
-        // Se tutto è valido, aggiorna il nome
         lega.setNome(nuovoNome);
-        System.out.println("✅Nome lega aggiornato con successo✅");
+        System.out.println("✅ Nome lega aggiornato con successo ✅");
+    }
+
+    // Metodo per validare lettere, accenti, apostrofi, trattini e spazi
+    public static boolean checkModify(String s) {
+        return s.matches("[a-zA-Zàèìòù'\\-\\s]{3,20}");
+    }
+
+    // Metodo per accettare numeri da 1 a 10 (in mezzo a testo), evitando 0 o >10
+    public static boolean validationCharacter(String s) {
+        return s.matches("[a-zA-Zàèìòù0-9\\s]{3,20}") &&
+                !s.matches(".*\\b(0|[1-9][1-9]|\\d{3,})\\b.*");
     }
 }

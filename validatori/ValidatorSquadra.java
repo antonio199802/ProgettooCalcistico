@@ -13,19 +13,29 @@ public class ValidatorSquadra {
      * Metodo per modificare il nome della squadra.
      * Viene richiesto un nuovo nome, se fornito, viene validato e aggiornato.
      */
+    public static boolean CheckModify(String s) {
+        return s.matches("[a-zA-Zàèìòù'\\-\\s]{3,20}");
+    }
+    public static boolean  ValidationCharacter(String s){
+        return s.matches("[a-zA-Z-àèìòù0-9 ]{3,20}");
+    }
+
     public static void modificaSquadra(Squadra squadra) {
         System.out.println("🔡Modifica nome squadra attuale: " + squadra.getNome());
         System.out.print("Nuovo nome (lascia vuoto per non modificare):\n");
         String nuovoNome = scanner.nextLine().trim();
+        //TODO crea il metodo a parte
+        CheckModify(nuovoNome);
+        squadra.setNome(nuovoNome);
 
-        if (!nuovoNome.isEmpty()) {
-            // Validazione lunghezza e formato (solo alfanumerici e spazi)
-            //TODO crea il metodo a parte
-            if (nuovoNome.length() < 3 || nuovoNome.length() > 20 || !nuovoNome.matches("[a-zA-Z0-9 ]+")) {
-                throw new IllegalArgumentException("❌Il nome deve contenere tra 3 e 20 caratteri alfanumerici e spazi❌");
-            }
-            squadra.setNome(nuovoNome);
-        }
+        if (!nuovoNome.isEmpty())
+            System.out.println("Non puoi lasciare il campo vuoto");
+        // Validazione lunghezza e formato (solo alfanumerici e spazi)
+
+
+        throw new IllegalArgumentException("❌Il nome deve contenere tra 3 e 20 caratteri alfanumerici e spazi❌");
+
+
     }
 
     /**
@@ -129,9 +139,9 @@ public class ValidatorSquadra {
                 || squadra.getPanchina().stream().anyMatch(c -> c.getNumeroMaglia() == numero);
     }
 
-        public static boolean calciatorePresenteInQualcheSquadra(Calciatore player, List<Squadra> squadre) {
-            return squadre.stream()
-                    .anyMatch(squadra ->
-                            squadra.getRosa().contains(player) || squadra.getPanchina().contains(player));
-        }
+    public static boolean calciatorePresenteInQualcheSquadra(Calciatore player, List<Squadra> squadre) {
+        return squadre.stream()
+                .anyMatch(squadra ->
+                        squadra.getRosa().contains(player) || squadra.getPanchina().contains(player));
     }
+}
