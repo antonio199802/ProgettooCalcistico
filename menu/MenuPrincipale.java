@@ -24,7 +24,7 @@ public class MenuPrincipale {
     // inizializzati con le liste condivise per sincronizzare i dati
     private final MenuCalciatori menuCalciatori = new MenuCalciatori(calciatori, squadre);
     private final MenuSquadre menuSquadre = new MenuSquadre(squadre, calciatori);
-    private final MenuLeghe menuLeghe = new MenuLeghe(squadre, calciatori);
+    private final MenuLeghe menuLeghe = new MenuLeghe(squadre);
 
     /**
      * Metodo principale per avviare il menu principale in loop,

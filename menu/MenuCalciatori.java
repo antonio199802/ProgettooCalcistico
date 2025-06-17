@@ -1,5 +1,4 @@
 package ProgettoCalcistico.menu;
-
 import ProgettoCalcistico.oggetti.Calciatore;
 import ProgettoCalcistico.oggetti.Squadra;
 import ProgettoCalcistico.validatori.ValidatorCalciatori;
@@ -8,6 +7,7 @@ import ProgettoCalcistico.validatori.ValidatorSquadra;
 import java.util.List;
 import java.util.Scanner;
 
+import static ProgettoCalcistico.Utils.Utils.leggiIndice;
 import static ProgettoCalcistico.validatori.ValidatorCalciatori.validaNomeOCognome;
 import static ProgettoCalcistico.validatori.ValidatorCalciatori.validaRuolo;
 
@@ -156,7 +156,7 @@ public class MenuCalciatori {
 
         visualizzaCalciatori(); // Mostra elenco per scegliere
         System.out.print("⤴️ Seleziona calciatore da modificare (indice) 🤾‍♂️: \n ");
-        int idx = leggiIndice(calciatori.size());
+        int idx = leggiIndice(scanner,calciatori.size());
         if (idx == -1) return; // Indice non valido o uscita
 
         try {
@@ -178,13 +178,13 @@ public class MenuCalciatori {
 
         visualizzaCalciatori(); // Mostra elenco
         System.out.print("⤴️ Seleziona calciatore da rimuovere (indice) 🤾‍♂️:\n ");
-        int idx = leggiIndice(calciatori.size());
+        int idx = leggiIndice(scanner,calciatori.size());
         if (idx == -1) return; // Indice non valido o uscita
 
 
         // Controlla se il calciatore è presente in almeno una squadra (rosa o panchina)
         //TODO crea un metodo a parte per questo check e usa gli stream
-        //modifica effettuata
+        //modifica effettuata-TODO
         while (true) {
             Calciatore player = calciatori.get(idx);
             boolean presente = ValidatorSquadra.calciatorePresenteInQualcheSquadra(player, squadre);
@@ -198,19 +198,5 @@ public class MenuCalciatori {
             System.out.println("✅ Calciatore rimosso con successo ✅");
         }
     }
+}
 
-        // Metodo helper per leggere e validare l'indice selezionato da input utente
-        private int leggiIndice ( int max){
-            try {
-                int idx = Integer.parseInt(scanner.nextLine());
-                if (idx < 0 || idx >= max) {
-                    System.out.println("❌ 😵‍💫 Indice fuori range 😵‍💫 ❌");
-                    return -1;
-                }
-                return idx;
-            } catch (NumberFormatException e) {
-                System.out.println("❌ 😵‍💫 Inserire un numero valido 😵‍💫 ❌");
-                return -1;
-            }
-        }
-    }
